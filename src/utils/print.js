@@ -2,13 +2,21 @@ import { getSettings } from './storage'
 
 function generateBillNumber() {
   const now = new Date()
-  const date = now.getFullYear().toString() +
-    String(now.getMonth() + 1).padStart(2, '0') +
-    String(now.getDate()).padStart(2, '0')
-  const time = String(now.getHours()).padStart(2, '0') +
-    String(now.getMinutes()).padStart(2, '0') +
-    String(now.getSeconds()).padStart(2, '0')
-  return date + time
+  const dd = String(now.getDate()).padStart(2, '0')
+  const mm = String(now.getMonth() + 1).padStart(2, '0')
+  const hh = String(now.getHours()).padStart(2, '0')
+  const min = String(now.getMinutes()).padStart(2, '0')
+  return `${dd}${mm}-${hh}${min}`
+}
+
+function formatBillDate() {
+  const now = new Date()
+  const dd = String(now.getDate()).padStart(2, '0')
+  const mm = String(now.getMonth() + 1).padStart(2, '0')
+  const yy = String(now.getFullYear()).slice(2)
+  const hh = String(now.getHours()).padStart(2, '0')
+  const min = String(now.getMinutes()).padStart(2, '0')
+  return `${dd}/${mm}/${yy} ${hh}:${min}`
 }
 
 export function printBill(records, type, hasDiscount) {
@@ -17,15 +25,17 @@ export function printBill(records, type, hasDiscount) {
   
   const showDiscount = type === 'calculator' && hasDiscount
   const billNo = generateBillNumber()
-  const billDate = new Date().toLocaleString()
+  const billDate = formatBillDate()
   
   const colFontSize = settings.columnFontSize || 13
   const bodyFontSize = settings.bodyFontSize || 15
   
   let tableHeaders = ''
   let tableRows = ''
+  let totalColSpan = 1
   
   if (type === 'calculator') {
+    totalColSpan = showDiscount ? 5 : 4
     tableHeaders = `<tr>
       <th>#</th>
       <th>Price</th>
@@ -42,6 +52,7 @@ export function printBill(records, type, hasDiscount) {
       <td>${r.total.toFixed(2)}</td>
     </tr>`).join('')
   } else {
+    totalColSpan = 2
     tableHeaders = `<tr>
       <th>#</th>
       <th>Price</th>
@@ -54,7 +65,6 @@ export function printBill(records, type, hasDiscount) {
   }
   
   const grandTotal = records.reduce((sum, r) => sum + (r.total || r.price), 0)
-  const colSpan = type === 'calculator' ? (showDiscount ? 4 : 3) : 1
   
   const html = `<!DOCTYPE html>
 <html>
@@ -85,16 +95,16 @@ export function printBill(records, type, hasDiscount) {
       word-wrap: break-word;
     }
     .bill-info {
-      font-size: ${colFontSize}px;
-      font-weight: 700;
-      margin: 4px 0;
+      font-size: ${colFontSize - 2}px;
+      font-weight: 600;
+      margin: 2px 0;
       display: flex;
       justify-content: space-between;
     }
     .divider {
       border: none;
       border-top: 1px dashed #000;
-      margin: 6px 0;
+      margin: 5px 0;
     }
     table {
       width: 100%;
@@ -105,8 +115,8 @@ export function printBill(records, type, hasDiscount) {
     th {
       font-size: ${colFontSize}px;
       font-weight: 900;
-      padding: 4px 2px;
-      text-align: right;
+      padding: 3px 2px;
+      text-align: center;
       border: 1px solid #000;
       white-space: nowrap;
       overflow: hidden;
@@ -114,21 +124,18 @@ export function printBill(records, type, hasDiscount) {
     td {
       font-size: ${bodyFontSize}px;
       font-weight: 700;
-      padding: 3px 2px;
-      text-align: right;
-      border: 1px solid #000;
-      word-wrap: break-word;
-      overflow: hidden;
-    }
-    th:first-child, td:first-child {
+      padding: 2px 3px;
       text-align: center;
-      width: 24px;
+      border: 1px solid #000;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .total-row td {
       border: 1px solid #000;
       font-weight: 900;
-      font-size: ${bodyFontSize + 3}px;
-      padding-top: 6px;
+      font-size: ${bodyFontSize + 2}px;
+      padding: 4px 3px;
+      text-align: center;
     }
     .bill-footer {
       text-align: center;
@@ -153,9 +160,7 @@ export function printBill(records, type, hasDiscount) {
   <hr class="divider"/>
   <div class="bill-info">
     <span>Bill#: ${billNo}</span>
-  </div>
-  <div class="bill-info">
-    <span>Date: ${billDate}</span>
+    <span>${billDate}</span>
   </div>
   <hr class="divider"/>
   <table>
@@ -163,8 +168,7 @@ export function printBill(records, type, hasDiscount) {
     <tbody>${tableRows}</tbody>
     <tfoot>
       <tr class="total-row">
-        <td colspan="${colSpan}">TOTAL</td>
-        <td>${grandTotal.toFixed(2)}</td>
+        <td colspan="${totalColSpan}">Total: ${grandTotal.toFixed(2)}</td>
       </tr>
     </tfoot>
   </table>
