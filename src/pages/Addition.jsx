@@ -52,7 +52,7 @@ function Addition() {
   // Space key for print
   useEffect(() => {
     const handler = (e) => {
-      if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
+      if (e.code === 'Space') {
         e.preventDefault()
         handlePrint()
       }
