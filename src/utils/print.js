@@ -37,15 +37,15 @@ export function printBill(records, type, hasDiscount) {
   if (type === 'calculator') {
     totalColSpan = showDiscount ? 5 : 4
     tableHeaders = `<tr>
-      <th>#</th>
-      <th>Price</th>
-      <th>Qty</th>
-      ${showDiscount ? `<th>Dis%</th>` : ''}
-      <th>Total</th>
+      <th class="col-sno">#</th>
+      <th class="col-price">Price</th>
+      <th class="col-qty">Qty</th>
+      ${showDiscount ? `<th class="col-dis">Dis%</th>` : ''}
+      <th class="col-total">Total</th>
     </tr>`
     
     tableRows = records.map((r, i) => `<tr>
-      <td>${i + 1}</td>
+      <td class="col-sno">${i + 1}</td>
       <td>${r.price}</td>
       <td>${r.qty}</td>
       ${showDiscount ? `<td>${r.discount || ''}</td>` : ''}
@@ -54,12 +54,12 @@ export function printBill(records, type, hasDiscount) {
   } else {
     totalColSpan = 2
     tableHeaders = `<tr>
-      <th>#</th>
+      <th class="col-sno">#</th>
       <th>Price</th>
     </tr>`
     
     tableRows = records.map((r, i) => `<tr>
-      <td>${i + 1}</td>
+      <td class="col-sno">${i + 1}</td>
       <td>${r.price}</td>
     </tr>`).join('')
   }
@@ -74,7 +74,7 @@ export function printBill(records, type, hasDiscount) {
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Courier New', Courier, monospace;
-      padding: 8px;
+      padding: 2px;
       width: 100%;
       max-width: 80mm;
       margin: 0 auto;
@@ -95,53 +95,56 @@ export function printBill(records, type, hasDiscount) {
       word-wrap: break-word;
     }
     .bill-info {
-      font-size: ${colFontSize - 2}px;
+      font-size: ${colFontSize - 3}px;
       font-weight: 600;
       margin: 2px 0;
       display: flex;
       justify-content: space-between;
+      white-space: nowrap;
     }
     .divider {
       border: none;
       border-top: 1px dashed #000;
-      margin: 5px 0;
+      margin: 4px 0;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed;
       border: 1px solid #000;
     }
     th {
       font-size: ${colFontSize}px;
       font-weight: 900;
-      padding: 3px 2px;
+      padding: 3px 1px;
       text-align: center;
       border: 1px solid #000;
       white-space: nowrap;
-      overflow: hidden;
     }
     td {
       font-size: ${bodyFontSize}px;
       font-weight: 700;
-      padding: 2px 3px;
+      padding: 2px 1px;
       text-align: center;
       border: 1px solid #000;
       white-space: nowrap;
-      overflow: hidden;
     }
+    .col-sno { width: 16px; }
+    .col-price { }
+    .col-qty { width: 28px; }
+    .col-dis { width: 32px; }
+    .col-total { }
     .total-row td {
       border: 1px solid #000;
       font-weight: 900;
       font-size: ${bodyFontSize + 2}px;
-      padding: 4px 3px;
+      padding: 4px 2px;
       text-align: center;
     }
     .bill-footer {
       text-align: center;
       font-size: ${colFontSize - 1}px;
       font-weight: 600;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     @media print {
       @page {
@@ -149,7 +152,7 @@ export function printBill(records, type, hasDiscount) {
         size: 80mm auto;
       }
       body {
-        padding: 4px;
+        padding: 2px;
       }
     }
   </style>
@@ -159,7 +162,7 @@ export function printBill(records, type, hasDiscount) {
   ${settings.shopAddress ? `<p class="shop-address">${settings.shopAddress}</p>` : ''}
   <hr class="divider"/>
   <div class="bill-info">
-    <span>Bill#: ${billNo}</span>
+    <span>Bill#:${billNo}</span>
     <span>${billDate}</span>
   </div>
   <hr class="divider"/>
