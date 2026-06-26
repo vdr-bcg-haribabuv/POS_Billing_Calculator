@@ -100,13 +100,14 @@ export function printBill(records, type, hasDiscount) {
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
+      border: 1px solid #000;
     }
     th {
       font-size: ${colFontSize}px;
       font-weight: 900;
       padding: 4px 2px;
       text-align: right;
-      border-bottom: 1px solid #000;
+      border: 1px solid #000;
       white-space: nowrap;
       overflow: hidden;
     }
@@ -115,7 +116,7 @@ export function printBill(records, type, hasDiscount) {
       font-weight: 700;
       padding: 3px 2px;
       text-align: right;
-      border-bottom: 1px dashed #ccc;
+      border: 1px solid #000;
       word-wrap: break-word;
       overflow: hidden;
     }
@@ -124,8 +125,7 @@ export function printBill(records, type, hasDiscount) {
       width: 24px;
     }
     .total-row td {
-      border-top: 2px solid #000;
-      border-bottom: none;
+      border: 1px solid #000;
       font-weight: 900;
       font-size: ${bodyFontSize + 3}px;
       padding-top: 6px;
