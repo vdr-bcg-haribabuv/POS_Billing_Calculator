@@ -71,7 +71,7 @@ function Addition() {
   const grandTotal = records.reduce((s, r) => s + r.price, 0)
   
   return (
-    <div className="calculator-wrapper">
+    <div className="addition-wrapper">
       <h2 className="page-title">Addition</h2>
       <div className="calc-form">
         <div className="calc-field addition-field">
