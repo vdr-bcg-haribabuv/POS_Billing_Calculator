@@ -57,11 +57,6 @@ function Calculator() {
   
   const handlePrint = useCallback(() => {
     if (records.length === 0) return
-    printBill(records, 'calculator', hasDiscount)
-  }, [records, hasDiscount])
-  
-  const handleSaveAndPrint = useCallback(() => {
-    if (records.length === 0) return
     const bill = {
       id: Date.now(),
       type: 'calculator',
@@ -73,6 +68,11 @@ function Calculator() {
     saveBill(bill)
     printBill(records, 'calculator', hasDiscount)
     setRecords([])
+    setPrice('')
+    setQty('1')
+    setDiscount('')
+    setTotal('')
+    setTimeout(() => priceRef.current?.focus(), 100)
   }, [records, hasDiscount])
   
   const handleClear = () => {
@@ -88,12 +88,12 @@ function Calculator() {
     const handler = (e) => {
       if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
         e.preventDefault()
-        handleSaveAndPrint()
+        handlePrint()
       }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [handleSaveAndPrint])
+  }, [handlePrint])
   
   const handleKeyDown = (e, nextRef) => {
     if (e.key === 'Enter') {
@@ -110,7 +110,7 @@ function Calculator() {
   const grandTotal = records.reduce((s, r) => s + r.total, 0)
   
   return (
-    <div>
+    <div className="calculator-wrapper">
       <h2 className="page-title">Calculator</h2>
       <div className="calc-form">
         <div className="calc-field price">
@@ -207,7 +207,6 @@ function Calculator() {
           
           <div className="actions-bar">
             <button className="btn btn-print" onClick={handlePrint}>Print</button>
-            <button className="btn btn-save" onClick={handleSaveAndPrint}>Save & Print</button>
             <button className="btn btn-clear" onClick={handleClear}>Clear</button>
           </div>
         </>
