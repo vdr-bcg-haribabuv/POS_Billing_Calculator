@@ -28,11 +28,6 @@ function Addition() {
   
   const handlePrint = useCallback(() => {
     if (records.length === 0) return
-    printBill(records, 'addition', false)
-  }, [records])
-  
-  const handleSaveAndPrint = useCallback(() => {
-    if (records.length === 0) return
     const bill = {
       id: Date.now(),
       type: 'addition',
@@ -44,6 +39,8 @@ function Addition() {
     saveBill(bill)
     printBill(records, 'addition', false)
     setRecords([])
+    setPrice('')
+    setTimeout(() => priceRef.current?.focus(), 100)
   }, [records])
   
   const handleClear = () => {
@@ -57,12 +54,12 @@ function Addition() {
     const handler = (e) => {
       if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
         e.preventDefault()
-        handleSaveAndPrint()
+        handlePrint()
       }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [handleSaveAndPrint])
+  }, [handlePrint])
   
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -74,7 +71,7 @@ function Addition() {
   const grandTotal = records.reduce((s, r) => s + r.price, 0)
   
   return (
-    <div>
+    <div className="calculator-wrapper">
       <h2 className="page-title">Addition</h2>
       <div className="calc-form">
         <div className="calc-field addition-field">
@@ -130,7 +127,6 @@ function Addition() {
           
           <div className="actions-bar">
             <button className="btn btn-print" onClick={handlePrint}>Print</button>
-            <button className="btn btn-save" onClick={handleSaveAndPrint}>Save & Print</button>
             <button className="btn btn-clear" onClick={handleClear}>Clear</button>
           </div>
         </>
