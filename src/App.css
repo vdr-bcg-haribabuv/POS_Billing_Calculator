@@ -18,6 +18,7 @@ body {
 
 .nav-bar {
   display: flex;
+  justify-content: center;
   gap: 0;
   background: #1a73e8;
   padding: 0;
@@ -53,11 +54,21 @@ body {
 }
 
 /* Big calculator input styles */
+.calculator-wrapper {
+  background: #fff;
+  border: 2px solid #ccc;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 420px;
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
 .calc-form {
   display: flex;
+  flex-direction: column;
   gap: 12px;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  align-items: stretch;
   margin-bottom: 20px;
 }
 
@@ -79,7 +90,7 @@ body {
   padding: 12px 16px;
   border: 2px solid #ddd;
   border-radius: 8px;
-  width: 160px;
+  width: 100%;
   text-align: right;
   transition: border-color 0.2s;
 }
@@ -91,11 +102,11 @@ body {
 }
 
 .calc-field.price input {
-  width: 200px;
+  width: 100%;
 }
 
 .calc-field.total input {
-  width: 200px;
+  width: 100%;
   background: #f8f9fa;
   font-weight: 700;
   color: #1a73e8;
@@ -103,7 +114,7 @@ body {
 
 .btn-add {
   font-size: 1.4rem;
-  padding: 12px 32px;
+  padding: 14px 32px;
   background: #1a73e8;
   color: #fff;
   border: none;
@@ -111,6 +122,7 @@ body {
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s;
+  width: 100%;
 }
 
 .btn-add:hover {
@@ -123,6 +135,7 @@ body {
   border-collapse: collapse;
   margin-top: 16px;
   background: #fff;
+  border: 2px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -132,7 +145,7 @@ body {
 .records-table td {
   padding: 12px 16px;
   text-align: right;
-  border-bottom: 1px solid #eee;
+  border: 1px solid #ddd;
 }
 
 .records-table th {
@@ -373,7 +386,7 @@ body {
 
 /* Addition page specific */
 .addition-field input {
-  width: 280px;
+  width: 100%;
 }
 
 .page-title {
