@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getBills, deleteBill } from '../utils/storage'
+import { getBills, deleteBill, getSettings } from '../utils/storage'
 import { printBill } from '../utils/print'
 
 function Bills() {
@@ -21,11 +21,14 @@ function Bills() {
   }
   
   const handlePrintBill = (bill) => {
-    printBill(bill.records, bill.type, bill.hasDiscount)
+    const discountEnabled = getSettings().showDiscount !== false
+    const hasDisc = discountEnabled && bill.hasDiscount
+    printBill(bill.records, bill.type, hasDisc)
   }
   
   if (viewBill) {
-    const hasDiscount = viewBill.type === 'calculator' && viewBill.hasDiscount
+    const discountEnabled = getSettings().showDiscount !== false
+    const hasDiscount = discountEnabled && viewBill.type === 'calculator' && viewBill.hasDiscount
     const billDate = new Date(viewBill.date)
     const formattedDate = `${String(billDate.getDate()).padStart(2,'0')}/${String(billDate.getMonth()+1).padStart(2,'0')}/${String(billDate.getFullYear()).slice(2)} ${String(billDate.getHours()).padStart(2,'0')}:${String(billDate.getMinutes()).padStart(2,'0')}`
     return (
