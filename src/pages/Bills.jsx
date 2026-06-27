@@ -26,9 +26,15 @@ function Bills() {
   
   if (viewBill) {
     const hasDiscount = viewBill.type === 'calculator' && viewBill.hasDiscount
+    const billDate = new Date(viewBill.date)
+    const formattedDate = `${String(billDate.getDate()).padStart(2,'0')}/${String(billDate.getMonth()+1).padStart(2,'0')}/${String(billDate.getFullYear()).slice(2)} ${String(billDate.getHours()).padStart(2,'0')}:${String(billDate.getMinutes()).padStart(2,'0')}`
     return (
       <div>
         <h2 className="page-title">Bill Details</h2>
+        <div className="bill-meta">
+          <span>Bill#: {viewBill.billNo || '—'}</span>
+          <span>Date: {formattedDate}</span>
+        </div>
         <button className="btn btn-view" onClick={() => setViewBill(null)} style={{ marginBottom: 16 }}>
           ← Back to Bills
         </button>
