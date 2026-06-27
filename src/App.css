@@ -451,8 +451,20 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1a73e8;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   text-align: center;
+}
+
+.bill-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 16px;
+  padding: 6px 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
 }
 
 .hint-text {
