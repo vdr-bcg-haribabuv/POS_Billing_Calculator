@@ -1,15 +1,16 @@
 import { getSettings } from './storage'
 
-function generateBillNumber() {
+export function generateBillNumber() {
   const now = new Date()
   const dd = String(now.getDate()).padStart(2, '0')
   const mm = String(now.getMonth() + 1).padStart(2, '0')
   const hh = String(now.getHours()).padStart(2, '0')
   const min = String(now.getMinutes()).padStart(2, '0')
-  return `${dd}${mm}-${hh}${min}`
+  const ss = String(now.getSeconds()).padStart(2, '0')
+  return `${dd}${mm}-${hh}${min}${ss}`
 }
 
-function formatBillDate() {
+export function formatBillDate() {
   const now = new Date()
   const dd = String(now.getDate()).padStart(2, '0')
   const mm = String(now.getMonth() + 1).padStart(2, '0')
@@ -74,9 +75,8 @@ export function printBill(records, type, hasDiscount) {
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Courier New', Courier, monospace;
-      padding: 2px;
-      width: 100%;
-      max-width: 80mm;
+      padding: 4px 6px;
+      width: calc(80mm - 12px);
       margin: 0 auto;
       -webkit-print-color-adjust: exact;
     }
@@ -95,27 +95,20 @@ export function printBill(records, type, hasDiscount) {
       word-wrap: break-word;
     }
     .bill-info {
-      font-size: ${colFontSize - 3}px;
-      font-weight: 600;
-      margin: 2px 0;
-      display: flex;
-      justify-content: space-between;
-      white-space: nowrap;
-    }
-    .divider {
-      border: none;
-      border-top: 1px dashed #000;
-      margin: 4px 0;
+      font-size: ${colFontSize - 1}px;
+      font-weight: 700;
+      margin: 3px 0;
     }
     table {
       width: 100%;
       border-collapse: collapse;
       border: 1px solid #000;
+      margin-top: 6px;
     }
     th {
       font-size: ${colFontSize}px;
       font-weight: 900;
-      padding: 3px 1px;
+      padding: 3px 2px;
       text-align: center;
       border: 1px solid #000;
       white-space: nowrap;
@@ -123,15 +116,15 @@ export function printBill(records, type, hasDiscount) {
     td {
       font-size: ${bodyFontSize}px;
       font-weight: 700;
-      padding: 2px 1px;
+      padding: 2px 2px;
       text-align: center;
       border: 1px solid #000;
       white-space: nowrap;
     }
-    .col-sno { width: 16px; }
+    .col-sno { width: 22px; }
     .col-price { }
     .col-qty { width: 28px; }
-    .col-dis { width: 32px; }
+    .col-dis { width: 34px; }
     .col-total { }
     .total-row td {
       border: 1px solid #000;
@@ -144,7 +137,7 @@ export function printBill(records, type, hasDiscount) {
       text-align: center;
       font-size: ${colFontSize - 1}px;
       font-weight: 600;
-      margin-top: 8px;
+      margin-top: 10px;
     }
     @media print {
       @page {
@@ -152,7 +145,8 @@ export function printBill(records, type, hasDiscount) {
         size: 80mm auto;
       }
       body {
-        padding: 2px;
+        padding: 4px 6px;
+        width: calc(80mm - 12px);
       }
     }
   </style>
@@ -160,12 +154,8 @@ export function printBill(records, type, hasDiscount) {
 <body>
   <p class="shop-name">${settings.shopName}</p>
   ${settings.shopAddress ? `<p class="shop-address">${settings.shopAddress}</p>` : ''}
-  <hr class="divider"/>
-  <div class="bill-info">
-    <span>Bill#:${billNo}</span>
-    <span>${billDate}</span>
-  </div>
-  <hr class="divider"/>
+  <p class="bill-info">Bill#: ${billNo}</p>
+  <p class="bill-info">Date: ${billDate}</p>
   <table>
     <thead>${tableHeaders}</thead>
     <tbody>${tableRows}</tbody>
@@ -175,7 +165,6 @@ export function printBill(records, type, hasDiscount) {
       </tr>
     </tfoot>
   </table>
-  <hr class="divider"/>
   <p class="bill-footer">Thank You! Visit Again</p>
   <script>window.onload = function() { window.print(); }</script>
 </body>
