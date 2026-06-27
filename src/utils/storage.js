@@ -7,6 +7,7 @@ export function getSettings() {
     shopAddress: '',
     columnFontSize: 13,
     bodyFontSize: 15,
+    showDiscount: true,
   }
   try {
     const stored = localStorage.getItem(SETTINGS_KEY)
