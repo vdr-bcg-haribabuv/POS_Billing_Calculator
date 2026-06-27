@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { saveBill, getSettings } from '../utils/storage'
-import { printBill } from '../utils/print'
+import { printBill, generateBillNumber, formatBillDate } from '../utils/print'
 
 function Addition() {
   const [records, setRecords] = useState([])
@@ -32,6 +32,7 @@ function Addition() {
       id: Date.now(),
       type: 'addition',
       date: new Date().toISOString(),
+      billNo: generateBillNumber(),
       records: [...records],
       total: records.reduce((s, r) => s + r.price, 0),
       hasDiscount: false
@@ -70,9 +71,16 @@ function Addition() {
   
   const grandTotal = records.reduce((s, r) => s + r.price, 0)
   
+  const currentBillNo = generateBillNumber()
+  const currentBillDate = formatBillDate()
+
   return (
     <div className="addition-wrapper">
       <h2 className="page-title">Addition</h2>
+      <div className="bill-meta">
+        <span>Bill#: {currentBillNo}</span>
+        <span>Date: {currentBillDate}</span>
+      </div>
       <div className="calc-form">
         <div className="calc-field addition-field">
           <label>Price (₹)</label>
