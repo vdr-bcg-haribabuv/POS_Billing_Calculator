@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { saveBill, getSettings } from '../utils/storage'
-import { printBill } from '../utils/print'
+import { printBill, generateBillNumber, formatBillDate } from '../utils/print'
 
 function Calculator() {
   const [records, setRecords] = useState([])
@@ -61,6 +61,7 @@ function Calculator() {
       id: Date.now(),
       type: 'calculator',
       date: new Date().toISOString(),
+      billNo: generateBillNumber(),
       records: [...records],
       total: records.reduce((s, r) => s + r.total, 0),
       hasDiscount
@@ -109,9 +110,16 @@ function Calculator() {
   
   const grandTotal = records.reduce((s, r) => s + r.total, 0)
   
+  const currentBillNo = generateBillNumber()
+  const currentBillDate = formatBillDate()
+
   return (
     <div className="calculator-wrapper">
       <h2 className="page-title">Calculator</h2>
+      <div className="bill-meta">
+        <span>Bill#: {currentBillNo}</span>
+        <span>Date: {currentBillDate}</span>
+      </div>
       <div className="calc-form">
         <div className="calc-field price">
           <label>Price (₹)</label>
