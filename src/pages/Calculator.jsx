@@ -15,6 +15,7 @@ function Calculator() {
   const totalRef = useRef()
   
   const settings = getSettings()
+  const discountEnabled = settings.showDiscount !== false
   
   useEffect(() => {
     priceRef.current?.focus()
@@ -28,7 +29,7 @@ function Calculator() {
     setTotal(p > 0 ? t.toFixed(2) : '')
   }, [price, qty, discount])
   
-  const hasDiscount = records.some(r => r.discount)
+  const hasDiscount = discountEnabled && records.some(r => r.discount)
   
   const addRecord = useCallback(() => {
     const p = parseFloat(price)
@@ -140,11 +141,12 @@ function Calculator() {
             type="number"
             value={qty}
             onChange={e => setQty(e.target.value)}
-            onKeyDown={e => handleKeyDown(e, discountRef)}
+            onKeyDown={e => handleKeyDown(e, discountEnabled ? discountRef : null)}
             onFocus={e => e.target.select()}
             min="1"
           />
         </div>
+        {discountEnabled && (
         <div className="calc-field">
           <label>Dis (%)</label>
           <input
@@ -158,6 +160,7 @@ function Calculator() {
             max="100"
           />
         </div>
+        )}
         <div className="calc-field total">
           <label>Total</label>
           <input
