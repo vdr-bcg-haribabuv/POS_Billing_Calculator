@@ -41,6 +41,20 @@ function Settings() {
       </div>
       
       <div className="settings-group">
+        <h3>Calculator Configuration</h3>
+        <div className="settings-field checkbox-field">
+          <label>
+            <input
+              type="checkbox"
+              checked={settings.showDiscount}
+              onChange={e => handleChange('showDiscount', e.target.checked)}
+            />
+            {' '}Show Discount (%) column in Calculator
+          </label>
+        </div>
+      </div>
+
+      <div className="settings-group">
         <h3>Bill Print Configuration</h3>
         <div className="settings-field">
           <label>Column Headers Font Size (px)</label>
